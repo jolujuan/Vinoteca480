@@ -5,8 +5,9 @@ controllers:
     type: attribute
 
 app_login:
-    path: /login
+    path: /api/login
     controller: App\Controller\AuthController::login
+    methods: POST
 
 app_api:
     path: /api
