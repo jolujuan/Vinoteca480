@@ -20,13 +20,6 @@ class AuthController extends AbstractController
         return $this->json(['status' => 'error', 'message' => 'Invalid credentials'], Response::HTTP_UNAUTHORIZED);
     }
 
-    #[Route('/logout', name: 'app_logout')]
-    public function logout(): void
-    {
-
-        throw new \Exception('This should never be reached!');
-    }
-
 
     public function api(): Response
     {

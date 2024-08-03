@@ -8,29 +8,29 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: WineRepository::class)]
-#[ORM\Table(name:"vino")]
+#[ORM\Table(name: "vino")]
 class Wines
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
     #[Groups(['wine_details'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Users::class)]
-    #[ORM\JoinColumn(name:"id_usuario", referencedColumnName:"id", nullable:false)]
+    #[ORM\JoinColumn(name: "id_usuario", referencedColumnName: "id", nullable: false)]
     #[Groups(['wine_details'])]
-    private Users $usuario;
+    private Users $users;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(name: "nombre", length: 50)]
     #[Groups(['wine_details'])]
-    private ?string $nombre = null;
+    private ?string $name = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name: "año")]
     #[Groups(['wine_details'])]
-    private ?int $año = null;
+    private ?int $year = null;
 
-    #[ORM\OneToMany(targetEntity: Measuraments::class, mappedBy: "vino")]
+    #[ORM\OneToMany(targetEntity: Measuraments::class, mappedBy: "wine")]
     #[Groups(['wine_details'])]
     private Collection $measuraments;
 
@@ -55,38 +55,38 @@ class Wines
         return $this;
     }
 
-    public function getUsuario(): Users
+    public function getUsers(): Users
     {
-        return $this->usuario;
+        return $this->users;
     }
 
-    public function setUsuario(Users $usuario): self
+    public function setUsers(Users $users): self
     {
-        $this->usuario = $usuario;
+        $this->users = $users;
 
         return $this;
     }
 
-    public function getNombre(): ?string
+    public function getName(): ?string
     {
-        return $this->nombre;
+        return $this->name;
     }
 
-    public function setNombre(string $nombre): static
+    public function setName(string $name): static
     {
-        $this->nombre = $nombre;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getAño(): ?int
+    public function getYear(): ?int
     {
-        return $this->año;
+        return $this->year;
     }
 
-    public function setAño(int $año): static
+    public function setYear(int $year): static
     {
-        $this->año = $año;
+        $this->year = $year;
 
         return $this;
     }

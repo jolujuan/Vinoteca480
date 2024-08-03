@@ -29,9 +29,5 @@ class WineController extends AbstractController
         $jsonContent = $serializer->serialize($wines, 'json', $context);
 
         return new JsonResponse($jsonContent, 200, [], true);
-
-
-        // return $this->json($wines, 200, [], ['groups' => ['wine_details']]);
-
     }
 }

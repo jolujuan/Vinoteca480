@@ -11,14 +11,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Measuraments
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
     #[Groups(['wine_details'])]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name: "año")]
     #[Groups(['wine_details'])]
-    private ?int $año = null;
+    private ?int $year = null;
 
     #[ORM\ManyToOne(targetEntity: Sensors::class)]
     #[ORM\JoinColumn(name: "id_sensor", referencedColumnName: "id", nullable: false)]
@@ -28,19 +28,19 @@ class Measuraments
     #[ORM\ManyToOne(targetEntity: Wines::class)]
     #[ORM\JoinColumn(name: "id_vino", referencedColumnName: "id", nullable: false)]
     #[Groups(['wine_details'])]
-    private Wines $vino;
+    private Wines $wine;
 
     #[ORM\Column(length: 15)]
     #[Groups(['wine_details'])]
     private ?string $color = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name: "temperatura")]
     #[Groups(['wine_details'])]
-    private ?float $temperatura = null;
+    private ?float $temperature = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name: "graduacion")]
     #[Groups(['wine_details'])]
-    private ?float $graduacion = null;
+    private ?float $graduation = null;
 
     #[ORM\Column]
     #[Groups(['wine_details'])]
@@ -51,14 +51,14 @@ class Measuraments
         return $this->id;
     }
 
-    public function getAño(): ?int
+    public function getYear(): ?int
     {
-        return $this->año;
+        return $this->year;
     }
 
-    public function setAño(int $año): static
+    public function setYear(int $year): static
     {
-        $this->año = $año;
+        $this->year = $year;
 
         return $this;
     }
@@ -75,14 +75,14 @@ class Measuraments
         return $this;
     }
 
-    public function getVino(): Wines
+    public function getWine(): Wines
     {
-        return $this->vino;
+        return $this->wine;
     }
 
-    public function setVino(Wines $vino): self
+    public function setWine(Wines $wine): self
     {
-        $this->vino = $vino;
+        $this->wine = $wine;
 
         return $this;
     }
@@ -99,26 +99,26 @@ class Measuraments
         return $this;
     }
 
-    public function getTemperatura(): ?float
+    public function getTemperature(): ?float
     {
-        return $this->temperatura;
+        return $this->temperature;
     }
 
-    public function setTemperatura(float $temperatura): static
+    public function setTemperature(float $temperature): static
     {
-        $this->temperatura = $temperatura;
+        $this->temperature = $temperature;
 
         return $this;
     }
 
-    public function getGraduacion(): ?float
+    public function getGraduation(): ?float
     {
-        return $this->graduacion;
+        return $this->graduation;
     }
 
-    public function setGraduacion(float $graduacion): static
+    public function setGraduation(float $graduation): static
     {
-        $this->graduacion = $graduacion;
+        $this->graduation = $graduation;
 
         return $this;
     }

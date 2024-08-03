@@ -11,3 +11,4 @@ app_login:
 app_api:
     path: /api
     controller: App\Controller\AuthController::api
+

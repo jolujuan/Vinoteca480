@@ -21,19 +21,19 @@ class MeasuramentController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         $sensor = $em->getRepository(Sensors::class)->find($data['idSensor']);
-        $vino = $em->getRepository(Wines::class)->find($data['idVino']);
+        $wine = $em->getRepository(Wines::class)->find($data['idWine']);
 
-        if (!$sensor || !$vino) {
+        if (!$sensor || !$wine) {
             return new JsonResponse(['error' => 'Sensor or Wine not found'], 404);
         }
 
         $measurament = new Measuraments();
-        $measurament->setAño($data['año']);
+        $measurament->setYear($data['year']);
         $measurament->setSensor($sensor);
-        $measurament->setVino($vino);
+        $measurament->setWine($wine);
         $measurament->setColor($data['color']);
-        $measurament->setTemperatura($data['temperatura']);
-        $measurament->setGraduacion($data['graduacion']);
+        $measurament->setTemperature($data['temperature']);
+        $measurament->setGraduation($data['graduation']);
         $measurament->setPh($data['ph']);
 
         $em->persist($measurament);

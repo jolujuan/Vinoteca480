@@ -9,20 +9,20 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name:"usuario")]
+#[ORM\Table(name: "usuario")]
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
     #[Groups(['sensor_details', 'wine_details'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $nombre = null;
+    #[ORM\Column(name: "nombre", length: 50)]
+    private ?string $name = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $apellido = null;
+    #[ORM\Column(name: "apellido", length: 50)]
+    private ?string $surname = null;
 
     #[ORM\Column(length: 50)]
     private ?string $email = null;
@@ -42,26 +42,26 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getNombre(): ?string
+    public function getName(): ?string
     {
-        return $this->nombre;
+        return $this->name;
     }
 
-    public function setNombre(string $nombre): static
+    public function setName(string $name): static
     {
-        $this->nombre = $nombre;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getApellido(): ?string
+    public function getSurname(): ?string
     {
-        return $this->apellido;
+        return $this->surname;
     }
 
-    public function setApellido(string $apellido): static
+    public function setSurname(string $surname): static
     {
-        $this->apellido = $apellido;
+        $this->surname = $surname;
 
         return $this;
     }
@@ -97,7 +97,8 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function eraseCredentials(): void
-    {}
+    {
+    }
 
     public function getUserIdentifier(): string
     {

@@ -7,23 +7,23 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SensorRepository::class)]
-#[ORM\Table(name:"sensores")]
+#[ORM\Table(name: "sensores")]
 class Sensors
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['sensor_details','wine_details'])]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[Groups(['sensor_details', 'wine_details'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Users::class)]
-    #[ORM\JoinColumn(name:"id_usuario", referencedColumnName:"id", nullable:false)]
+    #[ORM\JoinColumn(name: "id_usuario", referencedColumnName: "id", nullable: false)]
     #[Groups(['sensor_details'])]
-    private Users $usuario;
+    private Users $user;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(name: "nombre", length: 50)]
     #[Groups(['sensor_details'])]
-    private ?string $nombre = null;
+    private ?string $name = null;
 
     public function getId(): ?int
     {
@@ -37,26 +37,26 @@ class Sensors
         return $this;
     }
 
-    public function getUsuario(): Users
+    public function getUser(): Users
     {
-        return $this->usuario;
+        return $this->user;
     }
 
-    public function setUsuario(Users $usuario): self
+    public function setUser(Users $user): self
     {
-        $this->usuario = $usuario;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getNombre(): ?string
+    public function getName(): ?string
     {
-        return $this->nombre;
+        return $this->name;
     }
 
-    public function setNombre(string $nombre): static
+    public function setName(string $name): static
     {
-        $this->nombre = $nombre;
+        $this->name = $name;
 
         return $this;
     }

@@ -20,15 +20,15 @@ class SensorController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        $user = $em->getRepository(Users::class)->find($data['idUsuario']);
+        $user = $em->getRepository(Users::class)->find($data['idUser']);
 
         if (!$user) {
             return new JsonResponse(['error' => 'User not found'], 404);
         }
 
         $sensor = new Sensors();
-        $sensor->setNombre($data['nombre']);
-        $sensor->setUsuario($user);
+        $sensor->setName($data['name']);
+        $sensor->setUser($user);
         $em->persist($sensor);
         $em->flush();
 
@@ -42,7 +42,7 @@ class SensorController extends AbstractController
     public function getSensors(SensorRepository $sensorRepository): JsonResponse
     {
 
-        $sensors = $sensorRepository->findBy([], ['nombre' => 'ASC']);
+        $sensors = $sensorRepository->findBy([], ['name' => 'ASC']);
         return $this->json($sensors, 200, [], ['groups' => ['sensor_details']]);
     }
 
