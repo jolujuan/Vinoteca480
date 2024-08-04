@@ -16,7 +16,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag('Sensors')]
 class SensorController extends AbstractController
 {
-    #[Route('api/addSensor', methods: ["POST"])]
     #[IsGranted('ROLE_USER')]
     #[OA\Post(
         path: "/api/addSensor",
@@ -103,15 +102,11 @@ class SensorController extends AbstractController
 
     }
 
-
-    #[Route('/api/getSensors', methods: ["GET"])]
     #[IsGranted('ROLE_USER')]
     #[OA\Get(
         path: "/api/getSensors",
         description: "Retrieves a list of all sensors sorted by name in ascending order.",
         summary: "Get all sensors",
-
-        security: [["basicAuth" => []]],
         responses: [
             new OA\Response(
                 response: 200,

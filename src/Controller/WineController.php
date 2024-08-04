@@ -15,12 +15,11 @@ use Symfony\Component\Serializer\SerializerInterface;
 #[OA\Tag('Wines')]
 class WineController extends AbstractController
 {
-    #[Route('api/getWineMeasurament', methods: ["GET"])]
+    #[IsGranted('ROLE_USER')]
     #[OA\Get(
         path: "/api/getWineMeasurament",
         description: "Returns a list of all wine measurements available in the database.",
         summary: "Gets all wine measurements",
-        security: [["basicAuth" => []]],
         responses: [
             new OA\Response(
                 response: 200,

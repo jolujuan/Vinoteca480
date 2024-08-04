@@ -9,7 +9,36 @@ app_login:
     controller: App\Controller\AuthController::login
     methods: POST
 
-app_api:
-    path: /api
-    controller: App\Controller\AuthController::api
+app_logout:
+    path: /api/logout
+    controller: App\Controller\AuthController::logout
+    methods: POST
+
+app_api_sensorAdd:
+    path: /api/addSensor
+    controller: App\Controller\SensorController::addSensors
+    methods: POST
+
+app_api_sensorGet:
+    path: /api/getSensors
+    controller: App\Controller\SensorController::getSensors
+    methods: GET
+
+app_api_wines:
+    path: /api/getWineMeasurament
+    controller: App\Controller\WineController::getWineMeasurament
+    methods: GET
+
+app_api_measuraments:
+    path: /api/addMeasurament
+    controller: App\Controller\MeasuramentController::addMeasurament
+    methods: POST
+
+
+
+
+
+
+
+
 

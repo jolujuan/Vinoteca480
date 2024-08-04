@@ -16,7 +16,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag('Measuraments')]
 class MeasuramentController extends AbstractController
 {
-    #[Route('api/addMeasurament', methods: ["POST"])]
     #[IsGranted('ROLE_USER')]
     #[OA\Post(
         path: "/api/addMeasurament",
@@ -28,7 +27,7 @@ class MeasuramentController extends AbstractController
             content: new OA\JsonContent(
                 properties: [
                     new OA\Property(property: "idSensor", description: "ID of the sensor used", type: "integer", example: 1),
-                    new OA\Property(property: "idWine", description: "ID of the wine being measured", type: "integer", example: 5),
+                    new OA\Property(property: "idWine", description: "ID of the wine being measured", type: "integer", example: 3),
                     new OA\Property(property: "year", description: "Year of the measurament", type: "integer", example: 2024),
                     new OA\Property(property: "color", description: "Color of the wine", type: "string", example: "Red"),
                     new OA\Property(property: "temperature", description: "Temperature of the wine", type: "number", format: "float", example: 18.5),

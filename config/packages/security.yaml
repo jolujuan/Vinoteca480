@@ -13,29 +13,16 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        api_doc:
-            pattern: ^/api/doc
-            security: false
-        main:
-            lazy: true
-            provider: app_user_provider
-            json_login:
-                check_path: /login
-                username_path: email
-                password_path: password
-            logout:
-                path: /logout
-                target: /
-                invalidate_session: true
         api:
             pattern: ^/api
-            stateless: false
+            #Delete session when you close your browser
+            stateless: true
             provider: app_user_provider
-            json_login:
-                check_path: /api/login
-                username_path: email
-                password_path: password
-
+            http_basic: ~
+            logout:
+                path: /api/logout
+                target: /api/doc
+                invalidate_session: true
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -46,7 +33,6 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/api/doc, roles: ROLE_USER }
         - { path: ^/api, roles: ROLE_USER }
 
 

@@ -2,20 +2,22 @@
 
 namespace App\Controller;
 
+use App\Repository\UserRepository;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
 
 class AuthController extends AbstractController
 {
 
-    #[Route('/api/login', name: 'app_login', methods: ['POST'])]
     #[OA\Post(
         path: "/api/login",
-        summary: "Log in a user",
+        summary: "Login user",
         requestBody: new OA\RequestBody(
             description: "User credentials",
             required: true,
@@ -34,7 +36,7 @@ class AuthController extends AbstractController
         responses: [
             new OA\Response(
                 response: 200,
-                description: "Successful login",
+                description: "Successful!",
                 content: new OA\MediaType(
                     mediaType: "application/json",
                     schema: new OA\Schema(
@@ -61,22 +63,41 @@ class AuthController extends AbstractController
             )
         ]
     )]
-    public function login(Request $request, Security $security): Response
+    public function login(Request $request, Security $security, UserPasswordHasherInterface $passwordHasher, UserRepository $userRepository): Response
     {
-        $user = $security->getUser();
-        if ($user) {
-            return $this->json(['status' => 'success', 'user' => $user->getUserIdentifier()]);
+        $data = json_decode($request->getContent(), true);
+        $email = $data['email'];
+        $password = $data['password'];
+
+        $user = $userRepository->findOneBy(['email' => $email]);
+
+        if ($user && $passwordHasher->isPasswordValid($user, $password)) {
+            return $this->json(['status' => 'success', 'user' => $user->getEmail()]);
         }
 
         return $this->json(['status' => 'error', 'message' => 'Invalid credentials'], Response::HTTP_UNAUTHORIZED);
     }
 
+    #[OA\Post(
+        path: "/api/logout",
+        description: "Just tests. Deletes the session when cookies are stored in memory (stateless:false)",
+        summary: "Logout user",
+        tags: ["Authentication"],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Successful"
+            ),
+            new OA\Response(
+                response: 401,
+                description: "Unauthorized"
+            )
+        ]
+    )]
+    #[Route('/api/logout', name: 'app_logout', methods: ['POST'])]
 
-    public function api(): Response
+    public function logout(): Response
     {
-        return $this->json([
-            'user' => $this->getUser() ? $this->getUser()->getUserIdentifier() : null,
-            'path' => 'api',
-        ]);
+        return $this->json(['message' => 'see you soon:)']);
     }
 }
