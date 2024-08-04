@@ -269,7 +269,7 @@ INSERT INTO public.vino VALUES (3, 2, 'Merlot', 2019);
 -- Name: mediciones_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.mediciones_id_seq', 7, true);
+SELECT pg_catalog.setval('public.mediciones_id_seq', 4, true);
 
 
 --
@@ -278,7 +278,7 @@ SELECT pg_catalog.setval('public.mediciones_id_seq', 7, true);
 -- Name: sensores_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.sensores_id_seq', 8, true);
+SELECT pg_catalog.setval('public.sensores_id_seq', 4, true);
 
 
 --
@@ -287,7 +287,7 @@ SELECT pg_catalog.setval('public.sensores_id_seq', 8, true);
 -- Name: usuario_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.usuario_id_seq', 4, true);
+SELECT pg_catalog.setval('public.usuario_id_seq', 5, true);
 
 
 --
@@ -296,7 +296,7 @@ SELECT pg_catalog.setval('public.usuario_id_seq', 4, true);
 -- Name: vino_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.vino_id_seq', 3, true);
+SELECT pg_catalog.setval('public.vino_id_seq', 4, true);
 
 
 --
