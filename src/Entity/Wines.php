@@ -30,18 +30,17 @@ class Wines
     #[Groups(['wine_details'])]
     private ?int $year = null;
 
-    #[ORM\OneToMany(targetEntity: Measuraments::class, mappedBy: "wine")]
+    #[ORM\OneToMany(targetEntity: Measurements::class, mappedBy: "wine")]
     #[Groups(['wine_details'])]
-    private Collection $measuraments;
+    private Collection $measurements;
 
     /**
-     * @param Collection $measuraments
+     * @param Collection $measurements
      */
-    public function __construct(Collection $measuraments)
+    public function __construct(Collection $measurements)
     {
-        $this->measuraments = $measuraments;
+        $this->measurements = $measurements;
     }
-
 
     public function getId(): ?int
     {
@@ -91,10 +90,8 @@ class Wines
         return $this;
     }
 
-    public function getMeasuraments(): Collection
+    public function getMeasurements(): Collection
     {
-        return $this->measuraments;
+        return $this->measurements;
     }
-
-
 }

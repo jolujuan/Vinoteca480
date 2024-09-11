@@ -2,22 +2,26 @@
 
 namespace App\Controller;
 
+use App\Service\WineService;
 use OpenApi\Attributes as OA;
-use App\Repository\MeasuramentRepository;
-use App\Repository\WineRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[OA\Tag('Wines')]
 class WineController extends AbstractController
 {
+    private WineService $wineService;
+
+    public function __construct(WineService $wineService)
+    {
+        $this->wineService = $wineService;
+    }
+
     #[IsGranted('ROLE_USER')]
     #[OA\Get(
-        path: "/api/getWineMeasurament",
+        path: "/api/wines/measurements",
         description: "Returns a list of all wine measurements available in the database.",
         summary: "Gets all wine measurements",
         responses: [
@@ -32,7 +36,7 @@ class WineController extends AbstractController
                             new OA\Property(property: "name", type: "string", example: "Chardonnay"),
                             new OA\Property(property: "year", type: "integer", example: 2020),
                             new OA\Property(
-                                property: "measuraments",
+                                property: "measurements",
                                 type: "array",
                                 items: new OA\Items(
                                     properties: [
@@ -79,19 +83,23 @@ class WineController extends AbstractController
             ),
         ]
     )]
-    public function getWineMeasurament(WineRepository $wineRepository, MeasuramentRepository $measuramentRepository, SerializerInterface $serializer): JsonResponse
+    #[OA\Tag('Wines')]
+    public function listWinesMeasurements(SerializerInterface $serializer): JsonResponse
     {
-        $wines = $wineRepository->findAll();
-
-        $context = [
-            'groups' => ['wine_details'],
-            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
-                return $object->getId();
-            },
-        ];
-
+        $wines = $this->wineService->fetchWinesMeasurements();
+        $context = $this->createSerializationContext();
         $jsonContent = $serializer->serialize($wines, 'json', $context);
 
         return new JsonResponse($jsonContent, 200, [], true);
+    }
+
+    private function createSerializationContext(): array
+    {
+        return [
+            'groups' => ['wine_details'],
+            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            },
+        ];
     }
 }

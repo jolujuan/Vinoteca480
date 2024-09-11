@@ -2,23 +2,27 @@
 
 namespace App\Controller;
 
+use App\Service\SensorService;
 use OpenApi\Attributes as OA;
-use App\Entity\Sensors;
-use App\Entity\Users;
-use App\Repository\SensorRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\SerializerInterface;
 
-#[OA\Tag('Sensors')]
 class SensorController extends AbstractController
 {
+    private SensorService $sensorService;
+
+    public function __construct(SensorService $sensorService)
+    {
+        $this->sensorService = $sensorService;
+    }
+
     #[IsGranted('ROLE_USER')]
     #[OA\Post(
-        path: "/api/addSensor",
+        path: "/api/sensors",
         description: "Registers a new sensor and associates it with a user.",
         summary: "Add a new sensor",
         requestBody: new OA\RequestBody(
@@ -26,8 +30,18 @@ class SensorController extends AbstractController
             required: true,
             content: new OA\JsonContent(
                 properties: [
-                    new OA\Property(property: "idUser", description: "ID of the user to associate the sensor with", type: "integer", example: 1),
-                    new OA\Property(property: "name", description: "Name of the sensor", type: "string", example: "Temperature Sensor"),
+                    new OA\Property(
+                        property: "idUser",
+                        description: "ID of the user to associate the sensor with",
+                        type: "integer",
+                        example: 1
+                    ),
+                    new OA\Property(
+                        property: "name",
+                        description: "Name of the sensor",
+                        type: "string",
+                        example: "Temperature Sensor"
+                    ),
                 ],
                 type: "object"
             )
@@ -82,29 +96,21 @@ class SensorController extends AbstractController
             ),
         ]
     )]
-    public function addSensors(Request $request, EntityManagerInterface $em): JsonResponse
+    #[OA\Tag('Sensors')]
+    public function createSensor(Request $request): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-
-        $user = $em->getRepository(Users::class)->find($data['idUser']);
-
-        if (!$user) {
-            return new JsonResponse(['error' => 'User not found'], 404);
+        try {
+            $sensorData = json_decode($request->getContent(), true);
+            $this->sensorService->addSensor($sensorData);
+            return new JsonResponse(['status' => 'Registered Sensor'], 201);
+        } catch (NotFoundHttpException $e) {
+            return new JsonResponse(['error' => $e->getMessage()], 404);
         }
-
-        $sensor = new Sensors();
-        $sensor->setName($data['name']);
-        $sensor->setUser($user);
-        $em->persist($sensor);
-        $em->flush();
-
-        return new JsonResponse(['status' => 'Registered Sensor'],201);
-
     }
 
     #[IsGranted('ROLE_USER')]
     #[OA\Get(
-        path: "/api/getSensors",
+        path: "/api/sensors",
         description: "Retrieves a list of all sensors sorted by name in ascending order.",
         summary: "Get all sensors",
         responses: [
@@ -149,11 +155,12 @@ class SensorController extends AbstractController
             )
         ]
     )]
-    public function getSensors(SensorRepository $sensorRepository): JsonResponse
+    #[OA\Tag('Sensors')]
+    public function listSensors(SerializerInterface $serializer): JsonResponse
     {
+        $sensors = $this->sensorService->fetchSensors();
+        $jsonContent = $serializer->serialize($sensors, 'json', ['groups' => ['sensor_details']]);
 
-        $sensors = $sensorRepository->findBy([], ['name' => 'ASC']);
-        return $this->json($sensors, 200, [], ['groups' => ['sensor_details']]);
+        return new JsonResponse($jsonContent, 200, [], true);
     }
-
 }

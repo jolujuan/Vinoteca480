@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\MeasuramentRepository;
+use App\Repository\MeasurementRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: MeasuramentRepository::class)]
+#[ORM\Entity(repositoryClass: MeasurementRepository::class)]
 #[ORM\Table(name: "mediciones")]
-class Measuraments
+class Measurements
 {
     #[ORM\Id]
     #[ORM\Column]

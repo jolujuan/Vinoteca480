@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\Measuraments;
+use App\Entity\Measurements;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Measuraments>
+ * @extends ServiceEntityRepository<Measurements>
  */
-class MeasuramentRepository extends ServiceEntityRepository
+class MeasurementRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Measuraments::class);
+        parent::__construct($registry, Measurements::class);
     }
 
     //    /**
-    //     * @return Measuraments[] Returns an array of Measuraments objects
+    //     * @return Measurements[] Returns an array of Measurements objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -31,7 +31,7 @@ class MeasuramentRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Measuraments
+    //    public function findOneBySomeField($value): ?Measurements
     //    {
     //        return $this->createQueryBuilder('m')
     //            ->andWhere('m.exampleField = :val')

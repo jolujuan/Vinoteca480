@@ -1,12 +1,15 @@
 # Expose your documentation as JSON swagger compliant
-app.swagger:
-    path: /api/doc.json
+app.api_documentation_json:
+    path: /api/docs
     methods: GET
-    defaults: { _controller: nelmio_api_doc.controller.swagger }
+    defaults:
+        _controller: nelmio_api_doc.controller.swagger,
+        _format: json
 
 ## Requires the Asset component and the Twig bundle
 ## $ composer require twig asset
-app.swagger_ui:
-    path: /api/doc
+app.api_documentation_ui:
+    path: /api/docs-ui
     methods: GET
-    defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
+    defaults:
+        _controller: nelmio_api_doc.controller.swagger_ui
