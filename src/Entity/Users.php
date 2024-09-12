@@ -19,6 +19,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(name: "nombre", length: 50)]
+    #[Groups(['sensor_details'])]
     private ?string $name = null;
 
     #[ORM\Column(name: "apellido", length: 50)]

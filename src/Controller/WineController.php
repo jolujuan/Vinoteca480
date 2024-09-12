@@ -71,16 +71,6 @@ class WineController extends AbstractController
                     ]
                 )
             ),
-            new OA\Response(
-                response: 403,
-                description: "Forbidden",
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(property: "status", type: "string", example: "error"),
-                        new OA\Property(property: "message", type: "string", example: "Forbidden"),
-                    ]
-                )
-            ),
         ]
     )]
     #[OA\Tag('Wines')]

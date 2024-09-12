@@ -7,6 +7,7 @@ use App\Repository\SensorRepository;
 use App\Repository\WineRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MeasurementService
@@ -28,11 +29,20 @@ class MeasurementService
 
     public function addMeasurement(array $measurementData): Measurements
     {
+
+        if (!isset($measurementData['idSensor']) || !isset($measurementData['idWine'])) {
+            throw new BadRequestHttpException('Invalid input: Missing fields');
+        }
+
+        if (!is_numeric($measurementData['idSensor']) || !is_numeric($measurementData['idWine'])) {
+            throw new BadRequestHttpException('Invalid input: idSensor or idWine must be numeric');
+        }
+
         $sensor = $this->sensorRepository->find($measurementData['idSensor']);
         $wine = $this->wineRepository->find($measurementData['idWine']);
 
         if (!$sensor || !$wine) {
-            throw  new NotFoundHttpException('Sensor or Wine not found');
+            throw new NotFoundHttpException('Sensor or Wine not found');
         }
 
         $measurement = new Measurements();

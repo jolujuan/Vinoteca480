@@ -22,7 +22,7 @@ class Sensors
     private Users $user;
 
     #[ORM\Column(name: "nombre", length: 50)]
-    #[Groups(['sensor_details'])]
+    #[Groups(['sensor_details', 'wine_details'])]
     private ?string $name = null;
 
     public function getId(): ?int

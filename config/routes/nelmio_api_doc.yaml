@@ -3,7 +3,7 @@ app.api_documentation_json:
     path: /api/docs
     methods: GET
     defaults:
-        _controller: nelmio_api_doc.controller.swagger,
+        _controller: nelmio_api_doc.controller.swagger
         _format: json
 
 ## Requires the Asset component and the Twig bundle

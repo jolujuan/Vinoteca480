@@ -21,13 +21,30 @@
 ## Configuración de la Base de Datos
 
 - Configura la URL de la base de datos en el archivo `.env`:
-  
-`DATABASE_URL="postgresql://postgres:{your_password}@127.0.0.1:5432/vinoteca?serverVersion=16&charset=utf8"`
 
+         `DATABASE_URL="postgresql://postgres:{your_password}@127.0.0.1:5432/vinoteca?serverVersion=16&charset=utf8"`
+
+## Instrucciones para Ejecutar Tests
+
+
+
+1. **Configura la URL de la base de datos en el archivo `.env.test`**:
+
+         `DATABASE_URL="postgresql://postgres:{your_password}@127.0.0.1:5432/vinoteca?serverVersion=16&charset=utf8"`
+
+
+2. **Abre una terminal en la raíz del proyecto**:
+- Navega hasta la carpeta donde se encuentra el proyecto.
+
+3. **Ejecuta PHPUnit**:
+- Utiliza el siguiente comando para ejecutar las pruebas:
+  
+         php bin/phpunit --testdox
 
 ## Notas Adicionales
 
 - Asegúrate de que el servidor esté accesible desde `http://127.0.0.1:8000`.
 - Cambia las credenciales predeterminadas en ambientes de producción.
 - Mantén los cambios consistenes y actualizados en todo el proyecto.
+- El modificador `--testdox` de phpunit, muestra los tests formateados.
 

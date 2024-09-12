@@ -77,7 +77,7 @@ class AuthController extends AbstractController
             return new JsonResponse([
                 'status' => 'success',
                 'user' => $user->getEmail()
-            ], 201);
+            ], 200);
 
         } catch (UnauthorizedHttpException $e) {
             return new JsonResponse([

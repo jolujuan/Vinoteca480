@@ -7,6 +7,7 @@ use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -102,7 +103,7 @@ class MeasurementController extends AbstractController
                 description: "Invalid input",
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(property: "error", type: "string", example: "Invalid input")
+                        new OA\Property(property: "error", type: "string", example: "Invalid input data")
                     ]
                 )
             ),
@@ -116,16 +117,6 @@ class MeasurementController extends AbstractController
                     ]
                 )
             ),
-            new OA\Response(
-                response: 403,
-                description: "Forbidden",
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(property: "status", type: "string", example: "error"),
-                        new OA\Property(property: "message", type: "string", example: "Forbidden"),
-                    ]
-                )
-            ),
         ]
     )]
     #[OA\Tag('Measurements')]
@@ -135,6 +126,8 @@ class MeasurementController extends AbstractController
             $measurementData = json_decode($request->getContent(), true);
             $this->measurementService->addMeasurement($measurementData);
             return new JsonResponse(['status' => 'Measurement created'], 201);
+        } catch (BadRequestHttpException $e) {
+            return new JsonResponse(['error' => $e->getMessage()], 400);
         } catch (NotFoundHttpException $e) {
             return new JsonResponse(['error' => $e->getMessage()], 404);
         }

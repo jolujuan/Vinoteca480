@@ -7,6 +7,7 @@ use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -84,16 +85,6 @@ class SensorController extends AbstractController
                     ]
                 )
             ),
-            new OA\Response(
-                response: 403,
-                description: "Forbidden",
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(property: "status", type: "string", example: "error"),
-                        new OA\Property(property: "message", type: "string", example: "Forbidden"),
-                    ]
-                )
-            ),
         ]
     )]
     #[OA\Tag('Sensors')]
@@ -103,6 +94,8 @@ class SensorController extends AbstractController
             $sensorData = json_decode($request->getContent(), true);
             $this->sensorService->addSensor($sensorData);
             return new JsonResponse(['status' => 'Registered Sensor'], 201);
+        } catch (BadRequestHttpException $e) {
+            return new JsonResponse(['error' => $e->getMessage()], 400);
         } catch (NotFoundHttpException $e) {
             return new JsonResponse(['error' => $e->getMessage()], 404);
         }
@@ -144,15 +137,6 @@ class SensorController extends AbstractController
                     ]
                 )
             ),
-            new OA\Response(
-                response: 403,
-                description: "Forbidden",
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(property: "error", type: "string", example: "Forbidden")
-                    ]
-                )
-            )
         ]
     )]
     #[OA\Tag('Sensors')]
